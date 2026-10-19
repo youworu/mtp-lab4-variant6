@@ -1,6 +1,6 @@
-"""Генерация простых чисел."""
+"""Генерация простых чисел и фильтрация числовых последовательностей."""
 
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from math import isqrt
 
 
@@ -17,3 +17,8 @@ def prime_numbers(limit: int | None = None) -> Iterator[int]:
         if all(number % divisor != 0 for divisor in range(2, isqrt(number) + 1)):
             yield number
         number += 1
+
+
+def filter_even_numbers(numbers: Iterable[int]) -> list[int]:
+    """Возвращает чётные числа в исходном порядке через filter."""
+    return list(filter(lambda number: number % 2 == 0, numbers))

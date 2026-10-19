@@ -1,10 +1,10 @@
-"""Проверки генератора простых чисел."""
+"""Проверки генератора простых чисел и фильтрации чётных чисел."""
 
 import unittest
 from itertools import islice
 from types import GeneratorType
 
-from numbers_tasks import prime_numbers
+from numbers_tasks import filter_even_numbers, prime_numbers
 
 
 class PrimeNumbersTests(unittest.TestCase):
@@ -50,6 +50,30 @@ class PrimeNumbersTests(unittest.TestCase):
             with self.subTest(limit=limit):
                 with self.assertRaises(TypeError):
                     list(prime_numbers(limit))
+
+
+class EvenNumbersTests(unittest.TestCase):
+    """Сохранение порядка, повторов и исходного списка."""
+
+    def test_filters_even_numbers(self):
+        self.assertEqual(filter_even_numbers([1, 2, 3, 4, 5, 6]), [2, 4, 6])
+
+    def test_preserves_negative_numbers_zero_and_duplicates(self):
+        self.assertEqual(filter_even_numbers([-4, -3, 0, 2, 2]), [-4, 0, 2, 2])
+
+    def test_empty_input_and_odd_numbers(self):
+        self.assertEqual(filter_even_numbers([]), [])
+        self.assertEqual(filter_even_numbers([1, 3, 5]), [])
+
+    def test_does_not_change_the_original_list(self):
+        numbers = [1, 2, 3, 4]
+
+        filter_even_numbers(numbers)
+
+        self.assertEqual(numbers, [1, 2, 3, 4])
+
+    def test_accepts_a_generator(self):
+        self.assertEqual(filter_even_numbers(number for number in range(6)), [0, 2, 4])
 
 
 if __name__ == "__main__":
